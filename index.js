@@ -1,53 +1,67 @@
+// state = count: 0
+// action = increment, decrement, reset
+// reducer
+// store
+
 const { createStore } = require("redux");
 
-// state 
 const INCREMENT = 'INCREMENT';
 const DECREMENT = 'DECREMENT';
+const RESET = 'RESET';
 
-const initialCounterState = {
-    count: 0,
+const initialState = {
+    count: 0
 }
 
-// ACTION - object - type, payload
-const incrementCounter = () => {
+const incrementCounterAction = () => {
     return {
-        type: INCREMENT,
-    };
-}
-const decrementCounter = () => {
-    return {
-        type: DECREMENT,
-    };
-}
-
-// create reducer for counter
-const counterReducer = (state = initialCounterState, action) => {
-    switch (action.type) {
-        case INCREMENT:
-            return {
-                count: state.count + 1
-            };
-        case DECREMENT:
-            return {
-                count: state.count - 1
-            };
-        default:
-            state;
+        type: INCREMENT
     }
 }
 
-// create store 
-const store = createStore(counterReducer);
+const decrementCounterAction = () => {
+    return {
+        type: DECREMENT
+    }
+}
 
+const resetAction = () => {
+    return {
+        type: RESET
+    }
+}
+
+const counterReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case INCREMENT:
+            return {
+                ...state,
+                count: state.count + 1
+            }
+        case DECREMENT:
+            return {
+                ...state,
+                count: state.count - 1
+            }
+        case RESET:
+            return {
+                ...state,
+                count: 0
+            }
+
+        default:
+            state
+    }
+}
+
+const store = createStore(counterReducer)
 store.subscribe(() => {
     console.log(store.getState());
 })
 
-// dispatch  action
-store.dispatch(incrementCounter());
-store.dispatch(incrementCounter());
-store.dispatch(incrementCounter());
-
-store.dispatch(decrementCounter());
-store.dispatch(decrementCounter());
-store.dispatch(decrementCounter());
+store.dispatch(incrementCounterAction())
+store.dispatch(incrementCounterAction())
+store.dispatch(incrementCounterAction())
+store.dispatch(resetAction())
+store.dispatch(decrementCounterAction())
+store.dispatch(decrementCounterAction())
